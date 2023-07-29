@@ -1,6 +1,7 @@
 package Utility;
 
 import AdaptersAndComparators.AlbumLengthComparator;
+import DAO.MusicBandDAO;
 import Exceptions.NoKeyReferenceException;
 import MusicBand.MusicBand;
 import MusicBand.Album;
@@ -17,7 +18,11 @@ public class CollectionManager {
     private HashMap<Integer, MusicBand> musicBands = new HashMap<>();
     @XmlTransient
     private ConsoleManager consoleManager = new ConsoleManager();
+    private MusicBandDAO musicBandDAO;
 
+    public CollectionManager(MusicBandDAO musicBandDAO){
+        this.musicBandDAO = musicBandDAO;
+    }
     public CollectionManager(){};
 
     public HashMap<Integer, MusicBand> getMusicBands() {
@@ -140,5 +145,14 @@ public class CollectionManager {
                 .stream()
                 .sorted(Comparator.comparing(Album::getLength))
                 .forEach(System.out::println);
+    }
+
+    public void addDataFromDatabase(){
+        List<MusicBand> musicBandsList = musicBandDAO.getDataFromDatabase();
+        int count = 0;
+        for(MusicBand musicBand : musicBandsList){
+            musicBands.put(count, musicBand);
+            count++;
+        }
     }
 }

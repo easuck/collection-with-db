@@ -1,5 +1,6 @@
 package Commands;
 
+import DAO.MusicBandDAO;
 import Exceptions.WrongAmountCommandsException;
 import Utility.CollectionManager;
 import Utility.ConsoleManager;
@@ -7,11 +8,13 @@ import Utility.ConsoleManager;
 public class ClearCommand implements Command{
 
     private CollectionManager collectionManager;
-
     private ConsoleManager consoleManager;
+    private MusicBandDAO musicBandDAO;
 
-    public ClearCommand(CollectionManager collectionManager){
+
+    public ClearCommand(CollectionManager collectionManager, MusicBandDAO musicBandDAO){
         this.collectionManager = collectionManager;
+        this.musicBandDAO = musicBandDAO;
         consoleManager = new ConsoleManager();
     }
 
@@ -34,6 +37,8 @@ public class ClearCommand implements Command{
                 if (!argument.isEmpty() && !argument.equals(getName())) throw new WrongAmountCommandsException();
                 collectionManager.clearCollection();
                 consoleManager.println("Collection сleared");
+                musicBandDAO.clear();
+                consoleManager.println("Database сleared");
             }else{
                 consoleManager.println("There are no elements in the collection");
             }

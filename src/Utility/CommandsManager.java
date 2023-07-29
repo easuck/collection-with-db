@@ -1,6 +1,7 @@
 package Utility;
 
 import Commands.*;
+import DAO.MusicBandDAO;
 import Exceptions.WrongValuesException;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class CommandsManager {
     private List<Command> commandsListForHelpCommand;
     private ConsoleManager consoleManager;
 
-    public CommandsManager(CollectionManager collectionManager){
+    public CommandsManager(CollectionManager collectionManager, MusicBandDAO musicBandDAO){
         consoleManager = new ConsoleManager();
         commandsMap = new HashMap<>();
         commandsMap.put("help", new HelpCommand());
@@ -23,7 +24,7 @@ public class CommandsManager {
         commandsMap.put("show", new ShowCommand(collectionManager));
         commandsMap.put("insert", new InsertCommand(collectionManager));
         commandsMap.put("removeByKey", new RemoveByKeyCommand(collectionManager));
-        commandsMap.put("clear", new ClearCommand(collectionManager));
+        commandsMap.put("clear", new ClearCommand(collectionManager, musicBandDAO));
         commandsMap.put("updateById", new UpdateByIdCommand(collectionManager));
         commandsMap.put("removeGreater", new RemoveGreaterCommand(collectionManager));
         commandsMap.put("removeLower", new RemoveLowerCommand(collectionManager));

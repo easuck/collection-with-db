@@ -1,17 +1,19 @@
+import DAO.MusicBandDAO;
 import Utility.CollectionManager;
 import Utility.CommandsManager;
 import Utility.DatabaseConnector;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args)  {
 
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        databaseConnector.connect();
-
-        CollectionManager collectionManager = new CollectionManager();
-        CommandsManager commandsManager = new CommandsManager(collectionManager);
+        MusicBandDAO musicBandDAO = new MusicBandDAO();
+        CollectionManager collectionManager = new CollectionManager(musicBandDAO);
+        collectionManager.addDataFromDatabase();
+        CommandsManager commandsManager = new CommandsManager(collectionManager, musicBandDAO);
         commandsManager.manageCommands();
     }
 }
