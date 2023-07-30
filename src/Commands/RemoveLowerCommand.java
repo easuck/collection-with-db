@@ -1,5 +1,6 @@
 package Commands;
 
+import DAO.MusicBandDAO;
 import Utility.CollectionManager;
 import Utility.ConsoleManager;
 
@@ -7,9 +8,11 @@ public class RemoveLowerCommand implements Command{
 
     private CollectionManager collectionManager;
     private ConsoleManager consoleManager;
+    private MusicBandDAO musicBandDAO;
 
-    public RemoveLowerCommand(CollectionManager collectionManager){
+    public RemoveLowerCommand(CollectionManager collectionManager, MusicBandDAO musicBandDAO){
         this.collectionManager = collectionManager;
+        this.musicBandDAO = musicBandDAO;
         consoleManager = new ConsoleManager();
     }
 
@@ -29,6 +32,7 @@ public class RemoveLowerCommand implements Command{
         try{
             Integer length = Integer.parseInt(argument);
             collectionManager.removeLower(length);
+            musicBandDAO.removeLower(length);
             consoleManager.println("element was removed");
         }
         catch(NumberFormatException e){

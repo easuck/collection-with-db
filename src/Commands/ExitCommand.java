@@ -1,15 +1,20 @@
 package Commands;
 
+import DAO.MusicBandDAO;
 import Exceptions.WrongAmountCommandsException;
 import Utility.ConsoleManager;
 
 public class ExitCommand implements Command{
 
-    ConsoleManager consoleManager;
+    private ConsoleManager consoleManager;
+    private MusicBandDAO musicBandDAO;
 
-    public ExitCommand(){
-        this.consoleManager = new ConsoleManager();
+    public ExitCommand(MusicBandDAO musicBandDAO) {
+        consoleManager = new ConsoleManager();
+        this.musicBandDAO = musicBandDAO;
     }
+
+    public ExitCommand(){}
 
     @Override
     public String getName() {
@@ -27,6 +32,7 @@ public class ExitCommand implements Command{
             if (!argument.isEmpty() && !argument.equals(getName())) throw new WrongAmountCommandsException();
             consoleManager.println("Good bye");
             consoleManager.exit();
+            musicBandDAO.close();
         }catch (WrongAmountCommandsException ex) {
             consoleManager.println("incorrect command usage, usage example: " + getName());
         }

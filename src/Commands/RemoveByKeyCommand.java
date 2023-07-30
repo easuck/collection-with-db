@@ -1,5 +1,6 @@
 package Commands;
 
+import DAO.MusicBandDAO;
 import Exceptions.NoKeyReferenceException;
 import Utility.CollectionManager;
 import Utility.ConsoleManager;
@@ -7,11 +8,12 @@ import Utility.ConsoleManager;
 public class RemoveByKeyCommand implements Command{
 
     private CollectionManager collectionManager;
-
     private ConsoleManager consoleManager;
+    private MusicBandDAO musicBandDAO;
 
-    public RemoveByKeyCommand(CollectionManager collectionManager){
+    public RemoveByKeyCommand(CollectionManager collectionManager, MusicBandDAO musicBandDAO){
         this.collectionManager = collectionManager;
+        this.musicBandDAO = musicBandDAO;
         consoleManager = new ConsoleManager();
     }
 
@@ -32,6 +34,7 @@ public class RemoveByKeyCommand implements Command{
         try{
             Integer key = Integer.parseInt(argument);
             collectionManager.removeElementByKey(key);
+            musicBandDAO.removeByKey(key);
             consoleManager.println("element was removed");
         }
         catch(NumberFormatException e){

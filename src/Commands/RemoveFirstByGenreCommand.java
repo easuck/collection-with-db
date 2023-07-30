@@ -1,5 +1,6 @@
 package Commands;
 
+import DAO.MusicBandDAO;
 import Exceptions.WrongAmountCommandsException;
 import MusicBand.*;
 import Utility.CollectionManager;
@@ -9,9 +10,10 @@ public class RemoveFirstByGenreCommand implements Command{
 
     private CollectionManager collectionManager;
     private ConsoleManager consoleManager;
-
-    public RemoveFirstByGenreCommand(CollectionManager collectionManager){
+    private MusicBandDAO musicBandDAO;
+    public RemoveFirstByGenreCommand(CollectionManager collectionManager, MusicBandDAO musicBandDAO){
         this.collectionManager = collectionManager;
+        this.musicBandDAO = musicBandDAO;
         consoleManager = new ConsoleManager();
 
     }
@@ -56,7 +58,7 @@ public class RemoveFirstByGenreCommand implements Command{
                 }
             }
             collectionManager.removeFirstByGenre(genre);
-            consoleManager.println("element was removed");
+            musicBandDAO.removeFirstByGenre(genre);
         }
         catch(WrongAmountCommandsException e){
             consoleManager.println("incorrect command usage, usage example: " + getName());

@@ -19,17 +19,17 @@ public class CommandsManager {
         consoleManager = new ConsoleManager();
         commandsMap = new HashMap<>();
         commandsMap.put("help", new HelpCommand());
-        commandsMap.put("exit", new ExitCommand());
+        commandsMap.put("exit", new ExitCommand(musicBandDAO));
         commandsMap.put("info", new InfoCommand(collectionManager));
         commandsMap.put("show", new ShowCommand(collectionManager));
-        commandsMap.put("insert", new InsertCommand(collectionManager));
-        commandsMap.put("removeByKey", new RemoveByKeyCommand(collectionManager));
+        commandsMap.put("insert", new InsertCommand(collectionManager, musicBandDAO));
+        commandsMap.put("removeByKey", new RemoveByKeyCommand(collectionManager, musicBandDAO));
         commandsMap.put("clear", new ClearCommand(collectionManager, musicBandDAO));
-        commandsMap.put("updateById", new UpdateByIdCommand(collectionManager));
-        commandsMap.put("removeGreater", new RemoveGreaterCommand(collectionManager));
-        commandsMap.put("removeLower", new RemoveLowerCommand(collectionManager));
-        commandsMap.put("replaceIfGreater", new ReplaceIfGreater(collectionManager));
-        commandsMap.put("removeFirstByGenre", new RemoveFirstByGenreCommand(collectionManager));
+        commandsMap.put("updateById", new UpdateByIdCommand(collectionManager, musicBandDAO));
+        commandsMap.put("removeGreater", new RemoveGreaterCommand(collectionManager, musicBandDAO));
+        commandsMap.put("removeLower", new RemoveLowerCommand(collectionManager, musicBandDAO));
+        commandsMap.put("replaceIfGreater", new ReplaceIfGreater(collectionManager, musicBandDAO));
+        commandsMap.put("removeFirstByGenre", new RemoveFirstByGenreCommand(collectionManager, musicBandDAO));
         commandsMap.put("filterGreater", new FilterGreater(collectionManager));
         commandsMap.put("printBestAlbum", new PrintBestAlbumCommand(collectionManager));
     }

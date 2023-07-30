@@ -1,5 +1,6 @@
 package Commands;
 
+import DAO.MusicBandDAO;
 import Exceptions.WrongAmountCommandsException;
 import MusicBand.MusicBand;
 import Utility.CollectionManager;
@@ -11,9 +12,11 @@ public class InsertCommand implements Command{
     private ConsoleManager consoleManager;
     private UserActionsOnElement userActionsOnElement;
     private CollectionManager collectionManager;
+    private MusicBandDAO musicBandDAO;
 
-    public InsertCommand(CollectionManager collectionManager){
+    public InsertCommand(CollectionManager collectionManager, MusicBandDAO musicBandDAO){
         this.collectionManager = collectionManager;
+        this.musicBandDAO = musicBandDAO;
         consoleManager = new ConsoleManager();
         userActionsOnElement = new UserActionsOnElement(collectionManager);
     }
@@ -37,6 +40,7 @@ public class InsertCommand implements Command{
             MusicBand musicBand = new MusicBand();
             userActionsOnElement.setElementOfCollection(musicBand);
             collectionManager.insertElementByKey(key, musicBand);
+            musicBandDAO.insertDataToDatabase(key, musicBand);
         }
         catch(NumberFormatException e){
             consoleManager.println("key must be a number");

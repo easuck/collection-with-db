@@ -67,6 +67,7 @@ public class CollectionManager {
             if (entry.getValue().getId() == id){
                 userActionsOnElement.setElementOfCollection(entry.getValue());
                 flag = true;
+                consoleManager.println("element was updated");
             }
         }
         if (flag == false){
@@ -154,5 +155,14 @@ public class CollectionManager {
             musicBands.put(count, musicBand);
             count++;
         }
+    }
+
+    public MusicBand getElementById(long id){
+        for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
+            if(entry.getValue().getId() == id){
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 }
