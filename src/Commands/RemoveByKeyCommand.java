@@ -33,9 +33,13 @@ public class RemoveByKeyCommand implements Command{
     public void execute(String argument) {
         try{
             Integer key = Integer.parseInt(argument);
-            collectionManager.removeElementByKey(key);
-            musicBandDAO.removeByKey(key);
-            consoleManager.println("element was removed");
+            if (collectionManager.removeElementByKey(key)){
+                musicBandDAO.removeByKey(key);
+                consoleManager.println("element was removed");
+            }
+            else{
+                consoleManager.println("you can't delete record with key " + key);
+            }
         }
         catch(NumberFormatException e){
             consoleManager.println("key must be a number");

@@ -36,7 +36,7 @@ public class ClearCommand implements Command{
             if(collectionManager.getCollectionSize()!=0) {
                 if (!argument.isEmpty() && !argument.equals(getName())) throw new WrongAmountCommandsException();
                 collectionManager.clearCollection();
-                consoleManager.println("Collection сleared");
+                consoleManager.println("Your record deleted form collection");
                 musicBandDAO.clear();
                 consoleManager.println("Database сleared");
             }else{

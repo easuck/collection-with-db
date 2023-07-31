@@ -45,6 +45,8 @@ public class MusicBandDAO {
                     album.setLength(resultSet.getLong("best_album_length"));
                     musicBand.setBestAlbum(album);
 
+                    musicBand.setUserId(resultSet.getInt("user_id"));
+
                     musicBands.add(musicBand);
                 }
                 catch(Exception e){
@@ -72,25 +74,12 @@ public class MusicBandDAO {
         return null;
     }
 
-    public int numberOfRecords(){
-        try{
-            String query = "select from music_bands";
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-            return resultSetMetaData.getColumnCount();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
     public void clear(){
         try{
-            String query = "delete from music_bands";
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            String query = "delete from music_bands where user_id = ?";
+            PreparedStatement pStatement = connection.prepareStatement(query);
+            pStatement.setInt(1, UserDAO.getUserId());
+            pStatement.executeUpdate();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -108,17 +97,17 @@ public class MusicBandDAO {
 
     public void removeByKey(int key){
         try{
-            String query = "delete from music_bands where key=?";
+            String query = "delete from music_bands where key = ? and user_id = ?";
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setInt(1, key);
+            pStatement.setInt(2, UserDAO.getUserId());
             pStatement.executeUpdate();
         }
         catch(SQLException e){
             e.printStackTrace();
         }
     }
-
-    //ЭТО СКОРЕЕ ВСЕГО НЕ РАБОТАЕТ ИЗ-ЗА SELECT 1
+    
     public void removeFirstByGenre(String title){
         try{
             String query = "delete from music_bands where exists " +
@@ -134,9 +123,10 @@ public class MusicBandDAO {
 
     public void removeGreater(long length){
         try{
-            String query = "delete from music_bands where best_album_length > ?";
+            String query = "delete from music_bands where best_album_length > ? and user_id = ?";
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setLong(1, length);
+            pStatement.setInt(2, UserDAO.getUserId());
             pStatement.executeUpdate();
         }
         catch(SQLException e){
@@ -146,9 +136,10 @@ public class MusicBandDAO {
 
     public void removeLower(long length){
         try{
-            String query = "delete from music_bands where best_album_length < ?";
+            String query = "delete from music_bands where best_album_length < ? and user_id = ?";
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setLong(1, length);
+            pStatement.setInt(2, UserDAO.getUserId());
             pStatement.executeUpdate();
         }
         catch(SQLException e){
@@ -156,13 +147,15 @@ public class MusicBandDAO {
         }
     }
 
-    public void replaceIfGreater(long length){
+    public void replaceIfGreater(long length, int key){
         try{
-            String query = "update music_bands set best_album_length = ? where key=0 " +
-                    "and best_album_length < ?";
+            String query = "update music_bands set best_album_length = ? " +
+                    "where best_album_length < ? and user_id = ? and key = ?";
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setLong(1, length);
             pStatement.setLong(2, length);
+            pStatement.setInt(3, UserDAO.getUserId());
+            pStatement.setInt(4, key);
             pStatement.executeUpdate();
         }
         catch(SQLException e){
@@ -180,7 +173,7 @@ public class MusicBandDAO {
                     "best_album_name=?," +
                     "best_album_length=?," +
                     "name=? " +
-                    "where id=?";
+                    "where id=? and user_id = ?";
 
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setDouble(1, musicBand.getCoordinates().getX());
@@ -192,6 +185,7 @@ public class MusicBandDAO {
             pStatement.setLong(7, musicBand.getBestAlbum().getLength());
             pStatement.setString(8, musicBand.getName());
             pStatement.setLong(9, musicBand.getId());
+            pStatement.setInt(10, UserDAO.getUserId());
 
             pStatement.executeUpdate();
         }
@@ -204,8 +198,8 @@ public class MusicBandDAO {
         try{
             String query = "insert into music_bands(id, name, coordinate_x, coordinate_y," +
                     " creation_date, number_of_participants, singles_count, genre," +
-                    " best_album_name, best_album_length, key)" +
-                    " values(?,?,?,?,?,?,?,?,?,?,?)";
+                    " best_album_name, best_album_length, key, user_id)" +
+                    " values(?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setLong(1, musicBand.getId());
@@ -219,6 +213,7 @@ public class MusicBandDAO {
             pStatement.setString(9, musicBand.getBestAlbum().getName());
             pStatement.setLong(10, musicBand.getBestAlbum().getLength());
             pStatement.setInt(11, key);
+            pStatement.setInt(12, musicBand.getUserId());
 
             pStatement.executeUpdate();
         }

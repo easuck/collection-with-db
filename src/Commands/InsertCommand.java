@@ -37,6 +37,7 @@ public class InsertCommand implements Command{
     public void execute(String argument) {
         try{
             Integer key = Integer.parseInt(argument);
+            if(collectionManager.getMusicBands().containsKey(key)) throw new Exception();
             MusicBand musicBand = new MusicBand();
             userActionsOnElement.setElementOfCollection(musicBand);
             collectionManager.insertElementByKey(key, musicBand);
@@ -44,6 +45,9 @@ public class InsertCommand implements Command{
         }
         catch(NumberFormatException e){
             consoleManager.println("key must be a number");
+        }
+        catch(Exception e){
+            consoleManager.println("element with such key already exists");
         }
     }
 }

@@ -20,6 +20,10 @@ public class UserDAO {
         return userId;
     }
 
+    public static void setUserId(int userId) {
+        UserDAO.userId = userId;
+    }
+
     public int lastIdFromDatabase(){
         try{
             String query = "select * from users order by id desc";

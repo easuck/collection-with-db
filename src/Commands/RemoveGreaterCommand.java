@@ -32,7 +32,6 @@ public class RemoveGreaterCommand implements Command{
             Integer length = Integer.parseInt(argument);
             collectionManager.removeGreater(length);
             musicBandDAO.removeGreater(length);
-            consoleManager.println("element was removed");
         }
         catch (NumberFormatException e){
             consoleManager.println("length must be a number");

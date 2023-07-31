@@ -1,5 +1,6 @@
 package Commands;
 
+import DAO.UserDAO;
 import Exceptions.WrongAmountCommandsException;
 import Utility.CollectionManager;
 import Utility.ConsoleManager;
@@ -32,6 +33,7 @@ public class InfoCommand implements Command{
             if (!argument.isEmpty() && !argument.equals(getName())) throw new WrongAmountCommandsException();
             consoleManager.println("Type of collection: music bands");
             consoleManager.println("Count elements in collection: " + collectionManager.getCollectionSize());
+            consoleManager.println("UserId: " + UserDAO.getUserId());
             if (collectionManager.getCollectionSize() != 0){
                 consoleManager.println("Inicialization date: " + collectionManager.getFirstElement().getCreationDate());
             }

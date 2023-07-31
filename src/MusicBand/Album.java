@@ -2,15 +2,9 @@ package MusicBand;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name = "bestAlbum")
-@XmlAccessorType(XmlAccessType.FIELD)
-
 public class Album {
 
-    @XmlElement(required = true)
     private String name;
-
-    @XmlElement(required = true)
     private long length;
 
     public Album(String name, long length) {
