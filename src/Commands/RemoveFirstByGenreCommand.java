@@ -57,8 +57,15 @@ public class RemoveFirstByGenreCommand implements Command{
                     consoleManager.println("wrong input, try again");
                 }
             }
-            collectionManager.removeFirstByGenre(genre);
-            musicBandDAO.removeFirstByGenre(genre);
+            int key = collectionManager.removeFirstByGenre(genre);
+            if(key != -1){
+                musicBandDAO.removeByKey(key);
+                consoleManager.println("element was removed");
+            }
+            else{
+                consoleManager.println("no your elements of such genre");
+            }
+
         }
         catch(WrongAmountCommandsException e){
             consoleManager.println("incorrect command usage, usage example: " + getName());

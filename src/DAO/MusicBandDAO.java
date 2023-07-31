@@ -107,19 +107,6 @@ public class MusicBandDAO {
             e.printStackTrace();
         }
     }
-    
-    public void removeFirstByGenre(String title){
-        try{
-            String query = "delete from music_bands where exists " +
-                    "(select 1 from music_bands where genre=? order by key asc)";
-            PreparedStatement pStatement = connection.prepareStatement(query);
-            pStatement.setString(1, title);
-            pStatement.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
 
     public void removeGreater(long length){
         try{

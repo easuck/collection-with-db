@@ -84,27 +84,31 @@ public class CollectionManager {
     }
 
     public void removeGreater(int length){
+        Iterator<Integer> iterator = musicBands.keySet().iterator();
         int count = 0;
-        for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
-            if (entry.getValue().getBestAlbum().getLength() > length &&
-                    entry.getValue().getUserId() == UserDAO.getUserId()) {
-                musicBands.remove(entry.getKey());
+        while(iterator.hasNext()){
+            int key = iterator.next();
+            if(musicBands.get(key).getBestAlbum().getLength() > length &&
+                    musicBands.get(key).getUserId() == UserDAO.getUserId()){
+                musicBands.remove(key);
                 count++;
             }
         }
-        consoleManager.println(count + " element(s) was/were removed from collection");
+        consoleManager.println(count + " elements were removed from collection");
     }
 
     public void removeLower(int length){
+        Iterator<Integer> iterator = musicBands.keySet().iterator();
         int count = 0;
-        for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
-            if (entry.getValue().getBestAlbum().getLength() < length &&
-                    entry.getValue().getUserId() == UserDAO.getUserId()) {
-                musicBands.remove(entry.getKey());
+        while(iterator.hasNext()){
+            int key = iterator.next();
+            if(musicBands.get(key).getBestAlbum().getLength() < length &&
+                    musicBands.get(key).getUserId() == UserDAO.getUserId()){
+                musicBands.remove(key);
                 count++;
             }
         }
-        consoleManager.println(count + " element(s) was/were removed from collection");
+        consoleManager.println(count + " elements were removed from collection");
     }
 
     public int replaceIfGreater(int length) {
@@ -123,7 +127,19 @@ public class CollectionManager {
         return -1;
     }
 
-    public void removeFirstByGenre(String genre){
+    public int removeFirstByGenre(String genre) {
+        for(Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
+            if (entry.getValue().getGenre().getTitle().equals(genre) &&
+                    entry.getValue().getUserId() == UserDAO.getUserId()){
+                musicBands.remove(entry.getKey());
+                return entry.getKey();
+            }
+        }
+        return -1;
+    }
+
+
+    /*public void removeFirstByGenre(String genre){
         boolean flag = false;
         for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
             if (entry.getValue().getGenre().getTitle().equals(genre) &&
@@ -139,7 +155,7 @@ public class CollectionManager {
         else{
             consoleManager.println("no elements with such genre");
         }
-    }
+    }*/
 
     public void filterGreater(int numberOfParticipants){
         musicBands.entrySet()
