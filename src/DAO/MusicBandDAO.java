@@ -5,7 +5,6 @@ import MusicBand.*;
 import Utility.DatabaseConnector;
 
 import java.sql.*;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +13,8 @@ public class MusicBandDAO {
     private DatabaseConnector databaseConnector;
     private Connection connection;
 
-    public MusicBandDAO(){
-        this.databaseConnector = new DatabaseConnector();
+    public MusicBandDAO(DatabaseConnector databaseConnector){
+        this.databaseConnector = databaseConnector;
         this.connection = databaseConnector.connect();
     }
 
@@ -119,6 +118,7 @@ public class MusicBandDAO {
         }
     }
 
+    //ЭТО СКОРЕЕ ВСЕГО НЕ РАБОТАЕТ ИЗ-ЗА SELECT 1
     public void removeFirstByGenre(String title){
         try{
             String query = "delete from music_bands where exists " +
