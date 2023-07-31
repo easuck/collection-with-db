@@ -1,38 +1,23 @@
 package MusicBand;
 
 import AdaptersAndComparators.ZonedDateTimeAdapter;
+import DAO.UserDAO;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.ZonedDateTime;
 
-@XmlRootElement(name = "musicBand")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class MusicBand {
 
-    @XmlElement
     private Long id;
+    private int userId;
     private static long idCounter = 0;
-
-    @XmlElement(required = true)
     private String name;
-
-    @XmlElement(required = true)
     private Coordinates coordinates;
-
-    @XmlJavaTypeAdapter(ZonedDateTimeAdapter.class)
     private ZonedDateTime creationDate;
-
-    @XmlElement(required = true)
     private Integer numberOfParticipants;
-
-    @XmlElement(required = true)
     private Integer singlesCount;
-
-    @XmlElement(required = true)
     private MusicGenre genre;
-
-    @XmlElement(required = true)
     private Album bestAlbum;
 
     public MusicBand(String name, Coordinates coordinates, Integer numberOfParticipants,
@@ -45,15 +30,25 @@ public class MusicBand {
         this.singlesCount = singlesCount;
         this.genre = genre;
         this.bestAlbum = bestAlbum;
+        this.userId = UserDAO.getUserId();
     }
 
     public MusicBand(){
         id = idCounter++;
         creationDate = ZonedDateTime.now();
+        userId = UserDAO.getUserId();
     };
 
     public Long getId() {
         return id;
+    }
+
+    public int getUserId(){
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -118,6 +113,7 @@ public class MusicBand {
     public String toString() {
         return "MusicBand{" +
                 "id=" + id +
+                ", userId=" + userId +
                 ", name='" + name + '\'' +
                 ", coordinates=" + coordinates +
                 ", creationDate=" + creationDate +

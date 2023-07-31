@@ -2,6 +2,7 @@ package Utility;
 
 import AdaptersAndComparators.AlbumLengthComparator;
 import DAO.MusicBandDAO;
+import DAO.UserDAO;
 import Exceptions.NoKeyReferenceException;
 import MusicBand.MusicBand;
 import MusicBand.Album;
@@ -52,33 +53,41 @@ public class CollectionManager {
         musicBands.put(key, musicBand);
     }
 
-    public void removeElementByKey(int key) throws NoKeyReferenceException {
+    public boolean removeElementByKey(int key) throws NoKeyReferenceException {
         if (!musicBands.containsKey(key)) throw new NoKeyReferenceException();
-        musicBands.remove(key);
+        if(musicBands.get(key).getUserId() == UserDAO.getUserId()){
+            musicBands.remove(key);
+            return true;
+        }
+        return false;
     }
 
     public void clearCollection(){
-        musicBands.clear();
-    }
-
-    public void updateById(Long id, UserActionsOnElement userActionsOnElement) {
-        boolean flag = false;
-        for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
-            if (entry.getValue().getId() == id){
-                userActionsOnElement.setElementOfCollection(entry.getValue());
-                flag = true;
-                consoleManager.println("element was updated");
+        for(Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
+            if (entry.getValue().getUserId() == UserDAO.getUserId()){
+                musicBands.remove(entry.getKey());
             }
         }
-        if (flag == false){
-            consoleManager.println(("no elements with such id in collection"));
+    }
+
+    public boolean updateById(Long id, UserActionsOnElement userActionsOnElement) {
+        for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
+            if ((entry.getValue().getId() == id) &&
+            entry.getValue().getUserId() == UserDAO.getUserId()){
+                userActionsOnElement.setElementOfCollection(entry.getValue());
+                consoleManager.println("element was updated");
+                return  true;
+            }
         }
+        consoleManager.println(("no your elements with such id in collection"));
+        return false;
     }
 
     public void removeGreater(int length){
         int count = 0;
         for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
-            if (entry.getValue().getBestAlbum().getLength() > length) {
+            if (entry.getValue().getBestAlbum().getLength() > length &&
+                    entry.getValue().getUserId() == UserDAO.getUserId()) {
                 musicBands.remove(entry.getKey());
                 count++;
             }
@@ -89,7 +98,8 @@ public class CollectionManager {
     public void removeLower(int length){
         int count = 0;
         for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
-            if (entry.getValue().getBestAlbum().getLength() < length) {
+            if (entry.getValue().getBestAlbum().getLength() < length &&
+                    entry.getValue().getUserId() == UserDAO.getUserId()) {
                 musicBands.remove(entry.getKey());
                 count++;
             }
@@ -97,25 +107,27 @@ public class CollectionManager {
         consoleManager.println(count + " element(s) was/were removed from collection");
     }
 
-    public void replaceIfGreater(int length) {
+    public int replaceIfGreater(int length) {
         try{
-            if (musicBands.get(0).getBestAlbum().getLength() < length){
-                musicBands.get(0).getBestAlbum().setLength(length);
-            }
-            else{
-                consoleManager.println("album length value of the first element if greater than given one");
+            for(Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
+                if (entry.getValue().getBestAlbum().getLength() < length &&
+                        entry.getValue().getUserId() == UserDAO.getUserId()){
+                    musicBands.get(entry.getKey()).getBestAlbum().setLength(length);
+                    return entry.getKey();
+                }
             }
         }
         catch(Exception e){
             consoleManager.println("something wrong with length idk");
         }
-
+        return -1;
     }
 
     public void removeFirstByGenre(String genre){
         boolean flag = false;
         for (Map.Entry<Integer, MusicBand> entry : musicBands.entrySet()){
-            if (entry.getValue().getGenre().getTitle().equals(genre)){
+            if (entry.getValue().getGenre().getTitle().equals(genre) &&
+                    entry.getValue().getUserId() == UserDAO.getUserId()){
                 musicBands.remove(entry.getKey());
                 flag = true;
                 break;

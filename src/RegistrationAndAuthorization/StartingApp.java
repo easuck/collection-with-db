@@ -9,16 +9,13 @@ public class StartingApp {
 
     private ConsoleManager consoleManager;
     private UserDAO userDAO;
-    private int currentUserId;
 
     public StartingApp(UserDAO userDAO){
         consoleManager = new ConsoleManager();
         this.userDAO = userDAO;
     }
 
-    public int getCurrentUserId() {
-        return currentUserId;
-    }
+
 
     public void start(){
         int option;
@@ -51,8 +48,9 @@ public class StartingApp {
                 String username = consoleManager.readString();
                 consoleManager.print("enter your password: ");
                 String password = consoleManager.readString();
-                if (userDAO.singIn(username, password) != -1){
-                    currentUserId = userDAO.singIn(username, password);
+                int userId = userDAO.singIn(username, password);
+                if (userId != -1){
+                    UserDAO.setUserId(userId);
                     break;
                 }
                 else{

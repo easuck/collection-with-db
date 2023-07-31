@@ -34,9 +34,14 @@ public class ReplaceIfGreater implements Command{
     public void execute(String argument) {
         try{
             Integer length = Integer.parseInt(argument);
-            collectionManager.replaceIfGreater(length);
-            musicBandDAO.replaceIfGreater(length);
-            consoleManager.println("value was replaced");
+            int key = collectionManager.replaceIfGreater(length);
+            if (key != -1){
+                musicBandDAO.replaceIfGreater(length, key);
+                consoleManager.println("value was replaced");
+            }
+            else{
+                consoleManager.println("no fit element to replace");
+            }
         }
         catch(NumberFormatException e){
             consoleManager.println("length must be a number");

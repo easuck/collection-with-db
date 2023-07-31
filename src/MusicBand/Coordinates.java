@@ -2,14 +2,9 @@ package MusicBand;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name = "coordinates")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Coordinates {
 
-    @XmlElement(required = true)
     private double x;
-
-    @XmlElement(required = true)
     private float y;
 
     public Coordinates(double x, float y) {
